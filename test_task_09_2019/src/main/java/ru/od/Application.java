@@ -9,9 +9,10 @@ import ru.od.model.SubEntity;
 import ru.od.repository.MainEntityRepository;
 import ru.od.repository.SubEntityRepository;
 
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static java.util.stream.Collectors.joining;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 @SpringBootApplication
@@ -23,12 +24,15 @@ public class Application {
     @Bean
     public CommandLineRunner loadData(MainEntityRepository mainEntityRepository, SubEntityRepository subEntityRepository) {
         return (args) -> {
+            List<String> names = IntStream.range(0, SUBENTITIES_COUNT)
+                    .mapToObj(i -> " i " + i)
+                    .collect(Collectors.toList());
             for (int j = 0; j < DATA_SIZE; j++) {
                 MainEntity mainEntity = new MainEntity();
                 mainEntity.setName(String.format("Entity name of %d", ThreadLocalRandom.current().nextLong(Long.MAX_VALUE)));
                 for (int i = 0; i < SUBENTITIES_COUNT; i++) {
                     SubEntity subEntity = new SubEntity();
-                    subEntity.setName(" i " + i);
+                    subEntity.setName(names.get(i));
                     subEntityRepository.save(subEntity);
                     mainEntity.getSubEntities().add(subEntity);
                 }
