@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import ru.od.model.MainEntity;
 
 @Repository
-public interface MainEntityRepository  extends JpaRepository<MainEntity, Long>{
+public interface MainEntityRepository extends JpaRepository<MainEntity, Long> {
 }
