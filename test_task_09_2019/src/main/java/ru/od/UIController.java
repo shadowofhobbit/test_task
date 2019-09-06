@@ -6,6 +6,8 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.ui.UI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Title("test task 09.2019")
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class UIController extends UI {
 
     private SpringViewProvider viewProvider;
+    private static final Logger logger = LoggerFactory.getLogger(UIController.class);
 
     @Autowired
     public UIController(SpringViewProvider viewProvider) {
@@ -24,6 +27,6 @@ public class UIController extends UI {
     protected void init(VaadinRequest vaadinRequest) {
         Navigator navigator = new Navigator(this, this);
         navigator.addProvider(viewProvider);
-        System.out.println("Inited ");
+        logger.info("Inited ");
     }
 }

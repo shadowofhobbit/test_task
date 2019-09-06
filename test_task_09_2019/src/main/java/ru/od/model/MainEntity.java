@@ -10,7 +10,8 @@ import java.util.Objects;
 
 @Entity
 public class MainEntity {
-    @GeneratedValue@Id
+    @GeneratedValue
+    @Id
     private Long id;
     private String name;
     @OneToMany
@@ -37,7 +38,7 @@ public class MainEntity {
     }
 
     public void setSubEntities(List<SubEntity> subEntities) {
-        this.subEntities = subEntities;
+        this.subEntities = Objects.requireNonNull(subEntities);
     }
 
 }

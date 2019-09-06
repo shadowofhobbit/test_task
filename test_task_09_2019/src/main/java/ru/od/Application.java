@@ -18,6 +18,7 @@ import static java.util.stream.Collectors.joining;
 public class Application {
 
     private static final int DATA_SIZE = 1000;
+    private static final int SUBENTITIES_COUNT = 10;
 
     @Bean
     public CommandLineRunner loadData(MainEntityRepository mainEntityRepository, SubEntityRepository subEntityRepository) {
@@ -25,7 +26,7 @@ public class Application {
             for (int j = 0; j < DATA_SIZE; j++) {
                 MainEntity mainEntity = new MainEntity();
                 mainEntity.setName(String.format("Entity name of %d", ThreadLocalRandom.current().nextLong(Long.MAX_VALUE)));
-                for (int i = 0; i < 10; i++) {
+                for (int i = 0; i < SUBENTITIES_COUNT; i++) {
                     SubEntity subEntity = new SubEntity();
                     subEntity.setName(" i " + i);
                     subEntityRepository.save(subEntity);
@@ -38,6 +39,6 @@ public class Application {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class);
+        SpringApplication.run(Application.class, args);
     }
 }

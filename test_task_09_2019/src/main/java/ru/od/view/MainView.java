@@ -6,6 +6,8 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +25,7 @@ public class MainView extends Panel implements View {
     private final VerticalLayout rootLayout = new VerticalLayout();
     private final Button button = new Button("Загрузить еще");
     private final HorizontalLayout horizontalLayout = new HorizontalLayout();
+    private static final Logger logger = LoggerFactory.getLogger(MainView.class);
     private int current = 0;
 
     @Autowired
@@ -38,7 +41,7 @@ public class MainView extends Panel implements View {
     @Override
     public void attach() {
         super.attach();
-        System.out.println("Enter");
+        logger.info("Enter");
         loadData();
         button.addClickListener(clickEvent -> loadData());
     }
@@ -47,11 +50,14 @@ public class MainView extends Panel implements View {
         Page<MainEntity> mainEntities = mainEntityRepository.findAll(new PageRequest(current++, PAGE_SIZE));
         for (MainEntity mainEntity : mainEntities) {
             String format = String.format("Имя сущности %s", mainEntity.getName());
-            System.out.println(format);
+            logger.info(format);
             contentLayout.addComponent(new Label("----------"));
             contentLayout.addComponent(new Label(format));
             contentLayout.addComponent(new Label(String.format("Количество элементов подсущности %d", mainEntity.getSubEntities().size())));
             contentLayout.addComponent(new Label("----------"));
+        }
+        if (current == mainEntities.getTotalPages()) {
+            button.setVisible(false);
         }
     }
 
